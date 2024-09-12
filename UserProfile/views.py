@@ -112,6 +112,41 @@ class SignOutView(APIView):
         RefreshToken(refresh_token).blacklist()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+class RemainingPointDeductView(APIView):
+    @swagger_auto_schema(
+        operation_id="포인트 차감",
+        operation_description="유저가 사주 상세 정보를 구매할 때, 보유 포인트를 차감합니다.",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                "point_to_deduct": openapi.Schema(
+                    type=openapi.TYPE_INTEGER,
+                    description="차감할 포인트",
+                )
+            },
+        ),
+        responses={200: UserProfileSerializer, 400: "point_to_deduct field missing.", 401: "please signin", 404: "UserProfile Not found."},
+        manual_parameters=[openapi.Parameter("Authorization", openapi.IN_HEADER, description="access token", type=openapi.TYPE_STRING)]
+    )
+    def put(self, request):
+        user = request.user
+        if not user.is_authenticated:
+            return Response({"detail": "please signin"}, status=status.HTTP_401_UNAUTHORIZED)
+        try:
+            user_profile = UserProfile.objects.get(user=user)
+            remaining_points = user_profile.remaining_points
+            point_to_deduct = request.data.get("point_to_deduct")
+            if not point_to_deduct:
+                return Response({"detail": "point_to_deduct field missing."}, status=status.HTTP_400_BAD_REQUEST)
+            if remaining_points < point_to_deduct:
+                return Response({"detail": "Not enough points."}, status=status.HTTP_400_BAD_REQUEST)
+            user_profile.remaining_points -= point_to_deduct
+            user_profile.save()
+            serializer = UserProfileSerializer(user_profile)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except UserProfile.DoesNotExist:
+            return Response({"detail": "UserProfile Not found."}, status=status.HTTP_404_NOT_FOUND)
 
 class UserProfileListView(APIView):
     @swagger_auto_schema(

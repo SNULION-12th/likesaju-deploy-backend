@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import SignUpView, SignInView, SignOutView, TokenRefreshView, UserProfileListView, UserProfileDetailView, CheckUsernameView
+from .views import SignUpView, SignInView, SignOutView, TokenRefreshView, UserProfileListView, UserProfileDetailView, CheckUsernameView, RemainingPointDeductView
 
 app_name = "UserProfile"
 urlpatterns = [
@@ -10,4 +10,5 @@ urlpatterns = [
     path("userinfo/", UserProfileListView.as_view()),
     path("me/", UserProfileDetailView.as_view()),
     path("check/", CheckUsernameView.as_view()),
+    path("pointreduce/", RemainingPointDeductView.as_view()),
 ]
