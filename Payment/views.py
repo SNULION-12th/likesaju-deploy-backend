@@ -18,7 +18,6 @@ from drf_yasg import openapi
 from django.conf import settings
 
 pay_key = settings.KAKAO_PAY_KEY
-cid = settings.CID
 
 payready_url = 'https://open-api.kakaopay.com/online/v1/payment/ready'
 payapprove_url = 'https://open-api.kakaopay.com/online/v1/payment/approve'
@@ -36,7 +35,6 @@ class PayReadyView(APIView):
         if not user.is_authenticated:
             return Response({"detail": "please signin."}, status=status.HTTP_401_UNAUTHORIZED)
         
-        pay_data['cid'] = cid
         pay_data = json.dumps(pay_data)
 
         response = requests.post(payready_url, headers=pay_header, data=pay_data)
@@ -62,6 +60,8 @@ class PayApproveView(APIView):
 
         pg_token = request.data['pg_token']
         tid = request.data['tid']
+        cid = request.data['cid']
+        
         pay_hist = Payment.objects.get(tid=tid)
         pay_data = {
             'cid': cid,
