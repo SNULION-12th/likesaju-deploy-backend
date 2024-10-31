@@ -57,6 +57,9 @@ INSTALLED_APPS = [
     'Point',
     'UserProfile',
     'Payment',
+    # websocket seminar
+    'webchat'
+
 ]
 
 MIDDLEWARE = [
@@ -80,6 +83,10 @@ CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:3000",
 ]
 
+# websocket seminar
+SESSION_COOKIE_SAMESITE = None
+CSRF_COOKIE_SAMESITE= None
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_HEADERS = [
