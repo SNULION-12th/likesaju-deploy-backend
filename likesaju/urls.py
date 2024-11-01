@@ -34,5 +34,6 @@ urlpatterns = [
 
 # 웹소켓 URL 패턴 설정
 websocket_urlpatterns = [
-     # FILL HERE AT WEBSOCKET SEMINAR
+    # FILL HERE AT WEBSOCKET SEMINAR
+    path("ws/chat/", WebChatConsumer.as_asgi()),
 ]

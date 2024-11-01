@@ -12,5 +12,7 @@ from webchat.middleware import JWTAuthMiddleWare
 application = ProtocolTypeRouter(
     {
         # FILL HERE AT WEBSOCKET SEMINAR
+        "http" : django_application,
+        "websocket": JWTAuthMiddleWare(URLRouter(urls.websocket_urlpatterns)),
     }
 )
