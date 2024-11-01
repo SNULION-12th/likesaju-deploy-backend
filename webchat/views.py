@@ -29,6 +29,62 @@ def get_participants_data(chatroom):
     return participants
 
 class ChatRoomViewSet(viewsets.ViewSet):
+
+    @swagger_auto_schema(
+        operation_description="Create a new chatroom with specified participants",
+        operation_id="채팅방 생성",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'user_id': openapi.Schema(type=openapi.TYPE_INTEGER, description='ID of the user to be added as a participant'),
+            },
+            required=['user_id']
+        ),
+        responses={
+            201: openapi.Response(
+                description="ChatRoom created successfully",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'id': openapi.Schema(type=openapi.TYPE_STRING, description='ChatRoom ID'),
+                        'participants': openapi.Schema(
+                            type=openapi.TYPE_ARRAY,
+                            items=openapi.Schema(
+                                type=openapi.TYPE_OBJECT,
+                                properties={
+                                    'id': openapi.Schema(type=openapi.TYPE_INTEGER, description='User ID'),
+                                    'profile': openapi.Schema(
+                                        type=openapi.TYPE_OBJECT,
+                                        properties={
+                                            'nickname': openapi.Schema(type=openapi.TYPE_STRING, description='User nickname'),
+                                            'profilepic': openapi.Schema(
+                                                type=openapi.TYPE_OBJECT,
+                                                properties={
+                                                    'id': openapi.Schema(type=openapi.TYPE_INTEGER, description='Profile picture ID'),
+                                                    'image_url': openapi.Schema(type=openapi.TYPE_STRING, description='Profile picture URL'),
+                                                }
+                                            ),
+                                        }
+                                    )
+                                }
+                            )
+                        ),
+                        'last_message': openapi.Schema(type=openapi.TYPE_STRING, description='Last message in the chatroom'),
+                    }
+                )
+            ),
+            400: openapi.Response(
+                description="Invalid request data",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'error': openapi.Schema(type=openapi.TYPE_STRING, description='Error message')
+                    }
+                )
+            ),
+        }
+    )
+    #SCHEMA FOR SWAGGER. TO USE SWAGGER, RUN DJANGO DEV SERVER INSTEAD OF UVICORN
     
     def create(self, request):
         if not request.user.is_authenticated:
