@@ -33,5 +33,5 @@ class JWTAuthMiddleWare:
 
         scope["token"] = access_token
         scope["user"] = await get_user(scope)
-
+        print("여기는 실행됨")
         return await self.app(scope, receive, send)

@@ -166,6 +166,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -206,4 +208,9 @@ SWAGGER_SETTINGS = {
     'SECURITY_REQUIREMENTS': [{
         'BearerAuth': []
     }]
+}
+
+#1102 ADDED
+CHANNEL_LAYERS = {
+    "default": {"BACKEND": "channels.layers.InMemoryChannelLayer"},
 }

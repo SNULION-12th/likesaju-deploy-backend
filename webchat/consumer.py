@@ -18,13 +18,13 @@ class WebChatConsumer(JsonWebsocketConsumer):
         self.user = None
 
     def connect(self):
-		    # 'user' 에 해당하는 변수의 값을 가져온 후 인증 여부 확인.
+		# 'user' 에 해당하는 변수의 값을 가져온 후 인증 여부 확인.
         self.user = self.scope["user"]
         if not self.user.is_authenticated:
             self.close()  # WebSocket 연결을 종료
             return
             
-        # 현재 연결된 채널 이름을 캐싱하고, 
+        # user가  
         user_channel_name_dict[self.user.id] = self.channel_name
         # 연결을 수락
         self.accept()
@@ -40,7 +40,7 @@ class WebChatConsumer(JsonWebsocketConsumer):
 
     def receive_json(self, content):
     
-		    # 'user' 에 해당하는 변수의 값을 가져옴 (인증은 connect 에서 했으므로 생략)
+		# 'user' 에 해당하는 변수의 값을 가져옴 (인증은 connect 에서 했으므로 생략)
         sender = self.scope["user"]
         print(content)
         
@@ -85,7 +85,7 @@ class WebChatConsumer(JsonWebsocketConsumer):
             print(sender.id, participant_id)
             participant_group_ids = list({sender.id, participant_id})
             try:
-                #유저가 만들고자 하는 채팅방이 이미 존재하는지 확인하여 이미 존재하는 경우 새로 만들지 않고, 해당 채팅방에 메시지 전달
+                # 유저가 만들고자 하는 채팅방이 이미 존재하는지 확인하여 이미 존재하는 경우 새로 만들지 않고, 해당 채팅방에 메시지 전달
                 chatroom = ChatRoom.objects.annotate(
                     num_participants=Count('participants'),
                     num_matching=Count('participants', filter=Q(participants__id__in=participant_group_ids))
