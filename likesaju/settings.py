@@ -38,8 +38,8 @@ KAKAO_PAY_KEY = env('KAKAO_PAY_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# DEPLOY SEMINAR : ADD YOUR VM IP HERE
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-
 
 # Application definition
 
@@ -73,11 +73,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# DEPLOY SEMINAR : ADD YOUR "http://YOUR_VM_IP:3000" HERE
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
 
+# DEPLOY SEMINAR : ADD YOUR "http://YOUR_VM_IP:3000" HERE
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
